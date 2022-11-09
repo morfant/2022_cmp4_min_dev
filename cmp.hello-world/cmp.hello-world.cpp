@@ -1,6 +1,6 @@
 /// @file
-///	@ingroup 	minexamples
-///	@copyright	Copyright 2018 The Min-DevKit Authors. All rights reserved.
+///	@ingroup    cmp4
+///	@copyright	Copyright 2022 Gangil Yi(giy.hands@gmail.com). All rights reserved.
 ///	@license	Use of this source code is governed by the MIT License found in the License.md file.
 
 #include "c74_min.h"
@@ -9,14 +9,19 @@ using namespace c74::min;
 
 
 class hello_world : public object<hello_world> {
+private:
+    size_t  m_sr;
+    size_t  m_vs;
+    
 public:
-    MIN_DESCRIPTION	{"Post to the Max Console."};
+    MIN_DESCRIPTION	{" "};
     MIN_TAGS		{"utilities"};
-    MIN_AUTHOR		{"Cycling '74"};
-    MIN_RELATED		{"print, jit.print, dict.print"};
+    MIN_AUTHOR		{"Gangil Yi"};
+    MIN_RELATED		{" "};
 
     inlet<>  input	{ this, "(bang) post greeting to the max console" };
-    outlet<> output	{ this, "(anything) output the message which is posted to the max console" };
+//    outlet<> output	{ this, "(anything) output the message which is posted to the max console" };
+    outlet<> output { this, "(signal) output", "signal" };
 
 
     // define an optional argument for setting the message
@@ -46,6 +51,16 @@ public:
             return {};
         }
     };
+
+    message<> dspsetup{ this, "dsp_setup",
+        MIN_FUNCTION {
+            m_sr = args[0];
+            m_vs = args[1];
+            cout << "Sample Rate: " << m_sr << " / Signal Vector Size: " << m_vs << endl;
+            return {};
+        }
+    };
+
 
 
     // post to max window == but only when the class is loaded the first time
